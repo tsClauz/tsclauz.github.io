@@ -1,0 +1,64 @@
+@import url('global.css');
+
+:root {
+    --border: 0pt;
+    --marginBottom: 20px;
+    --headerH: 40px;
+    --button: hsl(222, 14%, 25%);
+    --activeButton: hsl(222, 40%, 25%);  
+    --hoverButton: hsl(222, 14%, 40%);  
+}
+
+input {
+    border: var(--border);
+    background-color: var(--input);
+    text-align: center;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: var(--marginBottom);
+    margin-top: calc(var(--marginBottom) / 5);
+    padding: 5px;
+    font-size: 15px;
+    height: 25px;
+    width: 150px;
+}
+
+.header {
+    min-height: 0vh;
+    position: absolute;
+    top: 0%;
+    text-align: center;
+}
+
+.header button {
+    background-color: var(--button);
+    color: white;
+    border-color: var(--button);
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    height: var(--headerH);
+    border-width: 0px 1px 1px 1px;
+}
+
+.header button:hover {
+    background-color: var(--hoverButton);
+}
+
+.header button.active {
+    background-color: var(--background);
+    border-width: 0px;
+}
+
+.header button.active:hover {
+    background-color: var(--background);
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+}
+
+input[type=number] { 
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
