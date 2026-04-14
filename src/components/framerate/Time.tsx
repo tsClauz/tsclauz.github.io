@@ -53,7 +53,7 @@ export default class extends React.Component {
             return
         }
         const seconds = (parseFloat(this.state.framecount.replaceAll(',', '.')) / parseFloat(this.state.framerate.replaceAll(',', '.')))
-        const milliseconds = (seconds - Math.floor(seconds)).toString().slice(0, 3)
+        const milliseconds = (seconds - Math.floor(seconds)).toString().slice(2, 5)
         const time = `${toHHMMSS(toBigIntWithDecimal(seconds))}${milliseconds !== '' ? `.${milliseconds}` : ''}`
         this.state.time = time
         this.setState(this.state)
