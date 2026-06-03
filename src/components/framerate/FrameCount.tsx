@@ -1,7 +1,5 @@
 import React from 'react';
-import parseTime from './parseTime';
-import toBigIntWithDecimal from './toBigIntWithDecimal';
-import validateTime from './validateTime';
+import HHMMSSToSeconds from './HHMMSSToSeconds';
 
 type Props = { time?: string, framerate?: string }
 
@@ -52,18 +50,19 @@ export default class extends React.Component<Props, { framerate: string, frameCo
     }
 
     updateFrameCount() {
-        if (!validateTime(this.state.time) ||
-            isNaN(parseFloat(this.state.framerate)) ||
-            parseFloat(this.state.framerate) < 1) {
+        if (isNaN(parseFloat(this.state.framerate))) {
             this.setState({ ...this.state, frameCount: '0' })
             return
         }
 
-        const fullSecs = parseTime(this.state.time)
+        const seconds = HHMMSSToSeconds(this.state.time)
 
-        const frameCountFull = (parseFloat(this.state.framerate.replaceAll(',', '.')) * fullSecs)
-        const frameCount = toBigIntWithDecimal(frameCountFull)
-        this.state.frameCount = frameCount.toString()
+        const frameCountFull = (parseFloat(this.state.framerate.replaceAll(',', '.')) * seconds)
+
+        const frameCount = Math.round(frameCountFull)
+
+        this.state.frameCount = `${frameCount}`
+
         this.setState(this.state)
         window?.localStorage?.setItem('framerate', this.state.framerate)
         window?.localStorage?.setItem('time', this.state.time)

@@ -1,5 +1,5 @@
-export default (secs: string) => {
-    const seconds = BigInt(secs.slice(0, secs.indexOf('.')))
+export default (secs: string | number) => {
+    const seconds = BigInt(secs)
 
     const hours = seconds / BigInt(3600)
     const minutes = (seconds - (hours * BigInt(3600))) / BigInt(60)
@@ -10,4 +10,5 @@ export default (secs: string) => {
     const sSeconds = finalSeconds < BigInt(10) ? `0${finalSeconds}` : `${finalSeconds}`
 
     return `${sHours}:${sMinutes}:${sSeconds}`
+
 }

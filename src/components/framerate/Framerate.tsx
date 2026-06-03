@@ -1,7 +1,5 @@
 import React from 'react';
-import parseTime from './parseTime';
-import toBigIntWithDecimal from './toBigIntWithDecimal';
-import validateTime from './validateTime';
+import HHMMSSToSeconds from './HHMMSSToSeconds';
 
 type Props = { time?: string, frameCount?: string }
 
@@ -52,20 +50,22 @@ export default class extends React.Component<Props, { framerate: string, frameCo
     }
 
     updateFramerate() {
-        if (!validateTime(this.state.time) ||
-            isNaN(parseFloat(this.state.frameCount)) ||
-            parseFloat(this.state.frameCount) < 1) {
-            return this.setState({ ...this.state, framerate: '0.000' })
+        if (isNaN(parseInt(this.state.frameCount)) || parseInt(this.state.frameCount) < 1) {
+
+            return this.setState({ ...this.state, framerate: '0.0000' })
         }
 
-        const fullSecs = parseTime(this.state.time)
-        if (fullSecs === 0) {
-            return this.setState({ ...this.state, framerate: '0.000' })
+        const seconds = HHMMSSToSeconds(this.state.time)
+        if (seconds === 0) {
+            return this.setState({ ...this.state, framerate: '0.0000' })
         }
 
-        const framerateFull = parseFloat(this.state.frameCount.replaceAll(',', '.')) / fullSecs
-        const framerate = toBigIntWithDecimal(framerateFull)
-        this.state.framerate = framerate
+        const framerateFull = parseInt(this.state.frameCount) / seconds
+
+        const framerate = Math.floor(framerateFull)
+        const framerateDecimal = (framerateFull - framerate).toString().padEnd(6, '0').slice(2, 6)
+
+        this.state.framerate = `${framerate}.${framerateDecimal}`
         this.setState(this.state)
         window?.localStorage?.setItem('framerate', this.state.framerate)
         window?.localStorage?.setItem('time', this.state.time)

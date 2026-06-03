@@ -1,6 +1,5 @@
 import React from 'react'
-import toBigIntWithDecimal from './toBigIntWithDecimal'
-import toHHMMSS from './toHHMMSS'
+import secondsToHHMMSS from './secondsToHHMMSS'
 
 export default class extends React.Component<{ framerate?: string, frameCount?: string }> {
     state: { framerate: string, frameCount: string, time: string }
@@ -47,16 +46,19 @@ export default class extends React.Component<{ framerate?: string, frameCount?: 
     }
 
     updateTime() {
-        if (!this.state.frameCount || !this.state.framerate ||
-            isNaN(parseFloat(this.state.frameCount)) || isNaN(parseFloat(this.state.framerate)) ||
-            parseFloat(this.state.frameCount) < 1 || parseFloat(this.state.framerate) < 1
+        if (isNaN(parseInt(this.state.frameCount)) || isNaN(parseFloat(this.state.framerate)) ||
+            parseFloat(this.state.framerate) < 1
         ) {
             this.setState({ ...this.state, time: '00:00:00.000' })
             return
         }
-        const seconds = (parseFloat(this.state.frameCount.replaceAll(',', '.')) / parseFloat(this.state.framerate.replaceAll(',', '.')))
-        const milliseconds = (seconds - Math.floor(seconds)).toString().slice(2, 5)
-        const time = `${toHHMMSS(toBigIntWithDecimal(seconds))}${milliseconds !== '' ? `.${milliseconds}` : ''}`
+
+        const fullSeconds = (parseInt(this.state.frameCount) / parseFloat(this.state.framerate.replaceAll(',', '.')))
+        const seconds = Math.floor(fullSeconds)
+
+        const milliseconds = (fullSeconds - seconds).toString().padEnd(5, '0').slice(2, 5)
+        const time = `${secondsToHHMMSS(seconds)}.${milliseconds}`
+
         this.state.time = time
         this.setState(this.state)
         window?.localStorage?.setItem('framerate', this.state.framerate)

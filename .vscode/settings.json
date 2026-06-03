@@ -3,5 +3,8 @@
     "cSpell.words": [
         "Clauz",
         "tsclauz"
-    ]
+    ],
+    "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+    "js/ts.tsserver.experimental.enableProjectDiagnostics": true,
+    "editor.bracketPairColorization.enabled": false
 }
